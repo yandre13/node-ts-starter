@@ -9,7 +9,7 @@ import {
 export async function createPostHandler(req: Request, res: Response) {
  try {
   // @ts-ignore
-  const userId = req.user._id
+  const userId = req.session._id
   const body = req.body
   const post = await createPost({...body, user: userId})
   return res.status(201).send({
@@ -27,7 +27,7 @@ export async function createPostHandler(req: Request, res: Response) {
 export async function updatePostHandler(req: Request, res: Response) {
  try {
   // @ts-ignore
-  const userId = req.user._id
+  const userId = req.session._id
   // @ts-ignore
   const postId = req.params.id
   const update = req.body
@@ -85,7 +85,7 @@ export async function getPostHandler(req: Request, res: Response) {
 export async function deletePostHandler(req: Request, res: Response) {
  try {
   // @ts-ignore
-  const userId = req.user._id
+  const userId = req.session._id
   // @ts-ignore
   const postId = req.params.id
   const post = await findPost({_id: postId})

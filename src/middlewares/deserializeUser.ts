@@ -14,18 +14,18 @@ async function deserializeUser(
  const {decoded, expired} = decode(accessToken)
  if (decoded) {
   // @ts-ignore
-  req.user = decoded
+  req.session = decoded
   return next()
  }
  //Update access token
  if (expired && refreshToken) {
-  const newAccessToken = await reIssueAccessToken({refreshToken})
+  const newAccessToken = await reIssueAccessToken(refreshToken)
   if (newAccessToken) {
    //Add new access token to the response header
    res.setHeader('x-access-token', newAccessToken)
    const {decoded} = decode(newAccessToken)
    // @ts-ignore
-   req.user = decoded
+   req.session = decoded
   }
   return next()
  }

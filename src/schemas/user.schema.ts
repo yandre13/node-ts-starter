@@ -11,10 +11,9 @@ const createUserSchema = object({
     /^[a-zA-Z0-9_.-]*$/,
     'password can only contain latin letters and numbers',
    ),
-  passwordConfirmation: string().oneOf(
-   [ref('password'), null],
-   'Passwords must match',
-  ),
+  passwordConfirmation: string()
+   .required('passwordConfirmation is required')
+   .oneOf([ref('password'), null], 'Passwords must match'),
   email: string()
    .email('must be a valid email address')
    .required('Email is required'),

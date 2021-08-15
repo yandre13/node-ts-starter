@@ -20,15 +20,14 @@ export function createAccessToken({
   | Omit<SessionDocument, 'password'>
   | LeanDocument<Omit<SessionDocument, 'password'>>
 }) {
- const accessToken = sign({...user, session: session._id}, {expiresIn: '15m'})
+ const accessToken = sign(
+  {_id: user._id, session: session._id},
+  {expiresIn: '15m'},
+ )
  return accessToken
 }
 
-export async function reIssueAccessToken({
- refreshToken,
-}: {
- refreshToken: string
-}) {
+export async function reIssueAccessToken(refreshToken: string) {
  //Decode refreshToken
  const {decoded} = decode(refreshToken)
  // @ts-ignore
@@ -51,6 +50,11 @@ export function updateSession(
 ) {
  //does not return the object
  return Session.updateOne(query, update)
+}
+
+export function deleteSession(query: FilterQuery<SessionDocument>) {
+ //does not return the object
+ return Session.deleteOne(query)
 }
 
 export function findSessions(query: FilterQuery<SessionDocument>) {

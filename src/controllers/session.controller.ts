@@ -5,6 +5,7 @@ import {
  createAccessToken,
  updateSession,
  findSessions,
+ deleteSession,
 } from 'services/session.service'
 import {sign} from 'utils/jwt.utils'
 
@@ -45,8 +46,8 @@ export async function createSessionHandler(req: Request, res: Response) {
 export async function invalidateSessionHandler(req: Request, res: Response) {
  try {
   // @ts-ignore
-  const {session: sessionId} = req.user
-  await updateSession({_id: sessionId}, {valid: false})
+  const {session: sessionId} = req.session
+  await deleteSession({_id: sessionId})
 
   return res.status(200).send({
    success: true,
@@ -63,7 +64,7 @@ export async function invalidateSessionHandler(req: Request, res: Response) {
 export async function getSessiosnHandler(req: Request, res: Response) {
  try {
   // @ts-ignore
-  const userId = req.user?._id
+  const userId = req.session._id
   const sessions = await findSessions({user: userId, valid: true})
   return res.status(200).send({
    success: true,
